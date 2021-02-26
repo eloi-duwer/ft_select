@@ -1,10 +1,11 @@
-SRC_NAME = main.c
+SRC_NAME = main.c \
+	signals.c
 
 NAME = ft_select
 
 CC = clang
 
-CFLAGS = -Wall -Wextra -Werror -I./include
+CFLAGS = -Wall -Wextra -Werror -I./include -I./libft/include
 
 SRCF = ./src/
 
@@ -12,10 +13,15 @@ OBJF = ./obj/
 
 OBJS = $(addprefix $(OBJF), $(SRC_NAME:.c=.o))
 
+LFT = libft/libft.a
+
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) -o $(NAME) $(OBJS) $(CFLAGS)
+$(NAME): $(LFT) $(OBJS)
+	$(CC) -o $(NAME) $(OBJS) $(CFLAGS) -L./libft -lft -ltermcap -lpthread
+
+$(LFT):
+	make -C ./libft
 
 $(OBJF)%.o: $(SRCF)%.c
 	@mkdir -p $(@D)
